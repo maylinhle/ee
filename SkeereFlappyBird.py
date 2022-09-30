@@ -4,9 +4,12 @@ import pygame
 pygame.init()
 
 # Colors
+black = (0, 0, 0)
+white = (255, 255, 255)
 green = (114, 177, 100)
+blue = (194, 219, 229)
 
-# The size of the screen.
+# Popping the screen up.
 size = (600, 600)
 screen = pygame.display.set_mode(size)
 # Titel verzinnen.
@@ -19,10 +22,16 @@ end = False
 
 # Main program loop.
 while not end:
-    # Closing the screen.
+
+    # Closing the screen when the player presses the close button.
     for event in pygame.event.get():
-        if event.type == pygame.Quit:
+        if event.type == pygame.QUIT:
             end = True
+
+    # drawing code
+    screen.fill(blue)
+    # pygame.draw.line(screen, green, [0, 10], [100, 110], 5)
+
 # fps invullen
 # clock.tick()
 
