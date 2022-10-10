@@ -2,6 +2,23 @@
 import pygame
 # from ground import ground
 
+class Popetje:
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.
+
+        self.rect = self.plaatje.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+    def update(self, deltaTijd):
+        self.rect.move_ip(100 * deltaTijd, 0)
+
+    def render(self, screen):
+        screen.blit(self. , self.rect)
+
+        
 pygame.init()
 
 # Colors
@@ -34,25 +51,6 @@ while not end:
                 speler.fly()
 
     dt = clock.tick(20) / 1000
-
-
-    class Popetje:
-        def __init__(self, x, y, width, height):
-            self.x = x
-            self.y = y
-
-            self.
-
-            self.rect = self.plaatje.get_rect()
-
-            self.rect.x = x
-            self.rect.y = y
-
-        def update(self, deltaTijd):
-            self.rect.move_ip(100 * deltaTijd, 0)
-
- #       def render(self, screen):
- #           screen.blit(self. , self.rect)
 
     mijnpopetje = Popetje(10, 10, 100, 100)
 
