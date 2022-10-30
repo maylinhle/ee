@@ -1,7 +1,5 @@
 # Imports
 import pygame
-import math
-import random
 
 
 pygame.init()
@@ -11,7 +9,7 @@ clock = pygame.time.Clock()
 screenwidth = 600
 screenheight = 800
 
-gravity = 2
+gravity = 4
 
 # Popping the screen up.
 size = (screenwidth, screenheight)
@@ -22,17 +20,20 @@ pygame.display.set_caption("May Linh's flappy bird")
 end = False
 
 # Converting the images
+# Background
 background = pygame.image.load("images/background.png").convert()
 background = pygame.transform.scale(background, size)
-
-bird = pygame.image.load("images/bird_wingup.png")
-bird = pygame.transform.scale(bird,(42, 30))
-birdRect = bird.get_rect(center=(100, 512))
-
+# Bird
+bird = pygame.image.load("images/bird_up.png")
+bird = pygame.transform.scale(bird,
+                              (42, 30))
+# Ground
 ground = pygame.image.load("images/ground.png").convert()
 ground = pygame.transform.scale(ground, (screenwidth, 200))
+# Pipe
+pipe = pygame.image.load("images/pipe.png").convert()
 
-# Positions images
+# Positions
 # Bird position
 birdX = 150
 birdY = 350
@@ -52,7 +53,7 @@ while not end:
             end = True
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                birdY -= 50
+                birdY -= 100
 
     # update bird position
     if beginTime - birdUpdateTime >= 25:
@@ -63,7 +64,7 @@ while not end:
     screen.blit(background, (0, 0))
     screen.blit(bird, (birdX, birdY))
 
-    #ground
+    # Ground
     screen.blit(ground, (groundX, groundY))
     screen.blit(ground, (groundX + screenwidth, groundY))
     groundX -= 1
@@ -72,4 +73,5 @@ while not end:
 
     pygame.display.update()
     clock.tick(120)
+
 pygame.quit()
