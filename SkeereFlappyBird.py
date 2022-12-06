@@ -1,6 +1,7 @@
 # Imports
 import pygame
-
+import random
+import sys
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -9,7 +10,8 @@ clock = pygame.time.Clock()
 screenwidth = 600
 screenheight = 800
 
-gravity = 4
+gravity = 0.25
+birdY = 0
 
 # Popping the screen up.
 size = (screenwidth, screenheight)
@@ -35,9 +37,10 @@ pipe = pygame.image.load("images/pipe.png").convert()
 
 # Positions
 # Bird position
-birdX = 150
-birdY = 350
-birdUpdateTime = pygame.time.get_ticks()
+#birdX = 150
+#birdY = 350
+birdPosition = bird.get_rect(center=(150, 350))
+#birdUpdateTime = pygame.time.get_ticks()
 
 # Ground position
 groundX = 0
@@ -46,24 +49,29 @@ groundY = 650
 # Main program loop.
 while not end:
     # Closing the screen when the player presses the close button.
-    beginTime = pygame.time.get_ticks()
+    #beginTime = pygame.time.get_ticks()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             end = True
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                birdY -= 100
+                birdY = 0
+                birdY -= 12
 
     # update bird position
-    if beginTime - birdUpdateTime >= 25:
-        birdY += gravity
-        birdUpdateTime = beginTime
+    #if beginTime - birdUpdateTime >= 25:
+    #    birdY += gravity
+    #    birdUpdateTime = beginTime
 
     # Drawing code
     screen.blit(background, (0, 0))
-    screen.blit(bird, (birdX, birdY))
 
+    # Bird
+    birdY += gravity
+    birdPosition.centery += birdY
+    screen.blit(bird, birdPosition)
+    #screen.blit(bird, (birdX, birdY))
     # Ground
     screen.blit(ground, (groundX, groundY))
     screen.blit(ground, (groundX + screenwidth, groundY))
