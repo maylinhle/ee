@@ -1,7 +1,5 @@
 # Imports
 import pygame
-import random
-import sys
 
 def checkActive():
     # Check if the bird doesn't hit the floor or flies too high (outside of the screen)
@@ -34,8 +32,7 @@ background = pygame.image.load("images/background.png").convert()
 background = pygame.transform.scale(background, size)
 # Bird
 bird = pygame.image.load("images/bird_up.png")
-bird = pygame.transform.scale(bird,
-                              (42, 30))
+bird = pygame.transform.scale(bird, (42, 30))
 # Ground
 ground = pygame.image.load("images/ground.png").convert()
 ground = pygame.transform.scale(ground, (screenwidth, 200))
@@ -64,7 +61,6 @@ while not end:
             if event.key == pygame.K_SPACE:
                 birdY = 0
                 birdY -= 10
-
     # update bird position
     #if beginTime - birdUpdateTime >= 25:
     #    birdY += gravity
