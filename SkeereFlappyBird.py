@@ -3,7 +3,7 @@ import pygame
 
 # funtions, putting these in a seperate document later
 def checkActive():
-    # Check if the bird doesn't hit the floor or flies too high (outside of the screen)
+    # Check if the bird doesn't hit the floor or flies too high (outside of the screen).
     if birdPosition.top >= 700 or birdPosition.bottom <= 0:
         return False
 
@@ -15,6 +15,10 @@ screenwidth = 600
 screenheight = 800
 gravity = 0.30
 birdY = 0
+birdCenterX = 150
+birdCenterY = 200
+groundX = 0
+groundY = 700
 
 # Popping the screen up.
 size = (screenwidth, screenheight)
@@ -25,7 +29,7 @@ pygame.display.set_caption("May Linh's flappy bird")
 end = False
 gameActive = True
 
-# Converting the images
+# Converting the images.
 # Background
 background = pygame.image.load("images/background.png").convert()
 background = pygame.transform.scale(background, size)
@@ -38,13 +42,8 @@ ground = pygame.transform.scale(ground, (screenwidth, 200))
 # Pipe
 pipe = pygame.image.load("images/pipe.png").convert()
 
-# Positions
-# Bird position
-birdPosition = bird.get_rect(center=(150, 350))
-
-# Ground position
-groundX = 0
-groundY = 700
+# Bird position.
+birdPosition = bird.get_rect(center=(birdCenterX, birdCenterY))
 
 # Main program loop.
 while not end:
@@ -53,15 +52,12 @@ while not end:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             end = True
-        # Making the bird move by pressing space
+        # Making the bird move by pressing space.
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 birdY = 0
                 birdY -= 10
             # Respawn
-            if gameActive == False:
-                birdPosition = bird.get_rect(center=(150, 350))
-                gameActive = True
 
     # Drawing code
     # Background
@@ -70,10 +66,12 @@ while not end:
     birdY += gravity
     birdPosition.centery += birdY
     screen.blit(bird, birdPosition)
-    #screen.blit(bird, (birdX, birdY))
     # Colliding
     gameActive = checkActive()
-
+    if gameActive == False:
+        birdPosition = bird.get_rect(center=(birdCenterX, birdCenterY))
+        birdY = 0
+        gameActive = True
     # Ground
     screen.blit(ground, (groundX, groundY))
     screen.blit(ground, (groundX + screenwidth, groundY))
