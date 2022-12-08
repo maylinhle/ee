@@ -4,8 +4,10 @@ import pygame
 # funtions, putting these in a seperate document later
 def checkActive():
     # Check if the bird doesn't hit the floor or flies too high (outside of the screen).
-    if birdPosition.top >= 700 or birdPosition.bottom <= 0:
+    if birdPosition.bottom >= 700 or birdPosition.top <= -10:
         return False
+    else:
+        return True
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -33,6 +35,12 @@ gameActive = True
 # Background
 background = pygame.image.load("images/background.png").convert()
 background = pygame.transform.scale(background, size)
+# Messages
+getReady = pygame.image.load("images/getready.png")
+#getReady = pygame.transform.scale2x(getReady, size)
+gameOver = pygame.image.load("images/gameover.png")
+gameOver = pygame.transform.scale2x(gameOver)
+gameOverRect = gameOver.get_rect(center=(300, 300))
 # Bird
 bird = pygame.image.load("images/bird_up.png")
 bird = pygame.transform.scale(bird, (42, 30))
@@ -54,24 +62,27 @@ while not end:
             end = True
         # Making the bird move by pressing space.
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_SPACE and gameActive:
                 birdY = 0
                 birdY -= 10
             # Respawn
-
+            if event.key == pygame.K_SPACE and gameActive == False:
+                birdPosition.center = (birdCenterX, birdCenterY)
+                birdY = 0
+                gameActive = True
     # Drawing code
     # Background
     screen.blit(background, (0, 0))
     # Bird
-    birdY += gravity
-    birdPosition.centery += birdY
-    screen.blit(bird, birdPosition)
-    # Colliding
-    gameActive = checkActive()
-    if gameActive == False:
-        birdPosition = bird.get_rect(center=(birdCenterX, birdCenterY))
-        birdY = 0
-        gameActive = True
+    #if gameActive:
+    if gameActive:
+        birdY += gravity
+        birdPosition.centery += birdY
+        screen.blit(bird, birdPosition)
+        # Colliding
+        gameActive = checkActive()
+    elif gameActive == False:
+        screen.blit(gameOver, (gameOverRect))
     # Ground
     screen.blit(ground, (groundX, groundY))
     screen.blit(ground, (groundX + screenwidth, groundY))
