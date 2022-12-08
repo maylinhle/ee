@@ -1,6 +1,7 @@
 # Imports
 import pygame
 
+# funtions, putting these in a seperate document later
 def checkActive():
     # Check if the bird doesn't hit the floor or flies too high (outside of the screen)
     if birdPosition.top >= 700 or birdPosition.bottom <= 0:
@@ -12,10 +13,8 @@ clock = pygame.time.Clock()
 # Settings
 screenwidth = 600
 screenheight = 800
-
 gravity = 0.30
 birdY = 0
-
 
 # Popping the screen up.
 size = (screenwidth, screenheight)
@@ -41,10 +40,7 @@ pipe = pygame.image.load("images/pipe.png").convert()
 
 # Positions
 # Bird position
-#birdX = 150
-#birdY = 350
 birdPosition = bird.get_rect(center=(150, 350))
-#birdUpdateTime = pygame.time.get_ticks()
 
 # Ground position
 groundX = 0
@@ -55,16 +51,17 @@ while not end:
 
     # Closing the screen when the player presses the close button.
     for event in pygame.event.get():
-        if event.type == pygame.QUIT or gameActive == False:
+        if event.type == pygame.QUIT:
             end = True
+        # Making the bird move by pressing space
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 birdY = 0
                 birdY -= 10
-    # update bird position
-    #if beginTime - birdUpdateTime >= 25:
-    #    birdY += gravity
-    #    birdUpdateTime = beginTime
+            # Respawn
+            if gameActive == False:
+                birdPosition = bird.get_rect(center=(150, 350))
+                gameActive = True
 
     # Drawing code
     # Background
