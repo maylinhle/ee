@@ -38,11 +38,12 @@ ground = pygame.image.load("images/ground.png").convert()
 ground = pygame.transform.scale(ground, (screenwidth, 200))
 
 # Pipe
-pipe = pygame.image.load("images/pipe.png").convert()
-pipe = pygame.transform.scale2x(pipe)
+pipeImage = pygame.image.load("images/pipe.png").convert()
+pipeImage = pygame.transform.scale(pipeImage, (73.2, 449.7))
 
 pipeList = []
-pygame.time.set_timer(pygame.USEREVENT, 1000)
+pipeHeights = [300, 350, 400, 450, 500, 550, 600]
+pygame.time.set_timer(pygame.USEREVENT, 1100)
 
 # Main program loop.
 while not end:
@@ -51,16 +52,20 @@ while not end:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             end = True
+
         # Making the bird move by pressing space.
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE and gameActive:
                 birdY = 0
-                birdY -= 10
+                birdY -= 8
             # Respawning the bird by pressing space.
             if event.key == pygame.K_SPACE and gameActive is False:
                 birdPosition.center = (birdCenterX, birdCenterY)
                 birdY = 0
                 gameActive = True
+        # Creating the pipes and putting them in a list.
+        if event.type == pygame.USEREVENT and gameActive:
+            pipeList.extend(spawn_pipe(pipeImage, pipeHeights))
 
     # Drawing code
     # Background
@@ -70,18 +75,30 @@ while not end:
     if gameActive is False:
         screen.blit(getReady, getReadyRect)
 
-    # Bird movement
+    # Letting things run when the game is active.
     if gameActive:
+        # Bird movement
         birdY += gravity
         birdPosition.centery += birdY
         screen.blit(bird, birdPosition)
+
+        # Loading the (random) pipes.
+        pipeList = move_pipe(pipeList)
+        # Drawing them
+        for pipe in pipeList:
+            if pipe.bottom >= 700:
+                screen.blit(pipeImage, pipe)
+            else:
+                flipTopPipe = pygame.transform.flip(pipeImage, False, True)
+                screen.blit(flipTopPipe, pipe)
+
         # Checking if the game is still active.
         gameActive = check_active(birdPosition)
 
     # Loading the (endless) ground.
     screen.blit(ground, (groundX, groundY))
     screen.blit(ground, (groundX + screenwidth, groundY))
-    groundX -= 1
+    groundX -= birdSpeed
     if groundX <= -screenwidth:
         groundX = 0
 

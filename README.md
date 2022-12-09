@@ -1,14 +1,12 @@
 # flappy bird to do list
 skeere flappy bird
 
-- [ ] 
-- [ ] Vogel soepeler laten bewegen
+- [x] Vogel soepeler laten bewegen
 - [ ] De streep tussen de images v.d. grond weghalen
-- [ ] Pijpen toevoegen
+- [x] Pijpen toevoegen
 - [ ] Score toevoegen
-- [ ] Game over met score en vraag nog potje of quit toevoegen
+- [ ] Game over screen
 - [ ] De scale van de plaatjes beter doen?
-- [ ] De bird animations geven?
-- [ ] Intro? (get ready)
+- [x] Intro? (get ready)
 - [ ] Steeds moeilijker maken/ moeilijkheid?
 - [ ] Soundeffects?
