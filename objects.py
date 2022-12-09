@@ -3,7 +3,11 @@ import random
 from settings import *
 
 # Check if the bird hasn't "died" yet
-def check_active(birdPosition):
+def check_hit(birdPosition, pipeList):
+    # Check if the bird doesn't hit the pipes.
+    for pipe in pipeList:
+        if birdPosition.colliderect(pipe):
+            return False
     # Check if the bird doesn't hit the floor or flies too high (outside the screen).
     if birdPosition.bottom >= 700 or birdPosition.top <= -10:
         return False

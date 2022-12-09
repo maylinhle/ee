@@ -11,10 +11,6 @@ size = (screenwidth, screenheight)
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("May Linh's flappy bird")
 
-# Loop control.
-end = False
-gameActive = False
-
 # Converting the images.
 # Background
 background = pygame.image.load("images/background.png").convert()
@@ -37,13 +33,21 @@ birdPosition = bird.get_rect(center=(birdCenterX, birdCenterY))
 ground = pygame.image.load("images/ground.png").convert()
 ground = pygame.transform.scale(ground, (screenwidth, 200))
 
-# Pipe
+# Pipes
 pipeImage = pygame.image.load("images/pipe.png").convert()
 pipeImage = pygame.transform.scale(pipeImage, (73.2, 449.7))
 
 pipeList = []
 pipeHeights = [300, 350, 400, 450, 500, 550, 600]
 pygame.time.set_timer(pygame.USEREVENT, 1100)
+
+# Keeping up a score.
+score = 0
+passedPipe = False
+
+# Loop control.
+end = False
+gameActive = False
 
 # Main program loop.
 while not end:
@@ -60,9 +64,11 @@ while not end:
                 birdY -= 8
             # Respawning the bird by pressing space.
             if event.key == pygame.K_SPACE and gameActive is False:
-                birdPosition.center = (birdCenterX, birdCenterY)
+                #birdPosition.center = (birdCenterX, birdCenterY)
                 birdY = 0
+                birdPosition.center = (birdCenterX, birdCenterY)
                 gameActive = True
+                pipeList.clear()
         # Creating the pipes and putting them in a list.
         if event.type == pygame.USEREVENT and gameActive:
             pipeList.extend(spawn_pipe(pipeImage, pipeHeights))
@@ -93,7 +99,7 @@ while not end:
                 screen.blit(flipTopPipe, pipe)
 
         # Checking if the game is still active.
-        gameActive = check_active(birdPosition)
+        gameActive = check_hit(birdPosition, pipeList)
 
     # Loading the (endless) ground.
     screen.blit(ground, (groundX, groundY))
