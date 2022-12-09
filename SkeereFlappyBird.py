@@ -1,26 +1,10 @@
 # Imports
 import pygame
-
-# funtions, putting these in a seperate document later
-def checkActive():
-    # Check if the bird doesn't hit the floor or flies too high (outside of the screen).
-    if birdPosition.bottom >= 700 or birdPosition.top <= -10:
-        return False
-    else:
-        return True
+from objects import *
+from settings import *
 
 pygame.init()
 clock = pygame.time.Clock()
-
-# Settings
-screenwidth = 600
-screenheight = 800
-gravity = 0.30
-birdY = 0
-birdCenterX = 150
-birdCenterY = 200
-groundX = 0
-groundY = 700
 
 # Popping the screen up.
 size = (screenwidth, screenheight)
@@ -29,29 +13,36 @@ pygame.display.set_caption("May Linh's flappy bird")
 
 # Loop control.
 end = False
-gameActive = True
+gameActive = False
 
 # Converting the images.
 # Background
 background = pygame.image.load("images/background.png").convert()
 background = pygame.transform.scale(background, size)
+
 # Messages
 getReady = pygame.image.load("images/getready.png")
-#getReady = pygame.transform.scale2x(getReady, size)
+getReady = pygame.transform.scale2x(getReady)
+getReadyRect = getReady.get_rect(center=(300, 400))
 gameOver = pygame.image.load("images/gameover.png")
 gameOver = pygame.transform.scale2x(gameOver)
 gameOverRect = gameOver.get_rect(center=(300, 300))
+
 # Bird
 bird = pygame.image.load("images/bird_up.png")
 bird = pygame.transform.scale(bird, (42, 30))
+birdPosition = bird.get_rect(center=(birdCenterX, birdCenterY))
+
 # Ground
 ground = pygame.image.load("images/ground.png").convert()
 ground = pygame.transform.scale(ground, (screenwidth, 200))
+
 # Pipe
 pipe = pygame.image.load("images/pipe.png").convert()
+pipe = pygame.transform.scale2x(pipe)
 
-# Bird position.
-birdPosition = bird.get_rect(center=(birdCenterX, birdCenterY))
+pipeList = []
+pygame.time.set_timer(pygame.USEREVENT, 1000)
 
 # Main program loop.
 while not end:
@@ -65,25 +56,29 @@ while not end:
             if event.key == pygame.K_SPACE and gameActive:
                 birdY = 0
                 birdY -= 10
-            # Respawn
-            if event.key == pygame.K_SPACE and gameActive == False:
+            # Respawning the bird by pressing space.
+            if event.key == pygame.K_SPACE and gameActive is False:
                 birdPosition.center = (birdCenterX, birdCenterY)
                 birdY = 0
                 gameActive = True
+
     # Drawing code
     # Background
     screen.blit(background, (0, 0))
-    # Bird
-    #if gameActive:
+
+    # Showing the "get ready" screen while the game is not active.
+    if gameActive is False:
+        screen.blit(getReady, getReadyRect)
+
+    # Bird movement
     if gameActive:
         birdY += gravity
         birdPosition.centery += birdY
         screen.blit(bird, birdPosition)
-        # Colliding
-        gameActive = checkActive()
-    elif gameActive == False:
-        screen.blit(gameOver, (gameOverRect))
-    # Ground
+        # Checking if the game is still active.
+        gameActive = check_active(birdPosition)
+
+    # Loading the (endless) ground.
     screen.blit(ground, (groundX, groundY))
     screen.blit(ground, (groundX + screenwidth, groundY))
     groundX -= 1
