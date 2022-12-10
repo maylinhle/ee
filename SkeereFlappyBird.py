@@ -41,10 +41,6 @@ pipeList = []
 pipeHeights = [300, 350, 400, 450, 500, 550, 600]
 pygame.time.set_timer(pygame.USEREVENT, 1100)
 
-# Keeping up a score.
-score = 0
-passedPipe = False
-
 # Loop control.
 end = False
 gameActive = False
@@ -64,7 +60,6 @@ while not end:
                 birdY -= 8
             # Respawning the bird by pressing space.
             if event.key == pygame.K_SPACE and gameActive is False:
-                #birdPosition.center = (birdCenterX, birdCenterY)
                 birdY = 0
                 birdPosition.center = (birdCenterX, birdCenterY)
                 gameActive = True
